@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User, Event, Holiday, Notification, Review
+from .models import User, Evento, Feriado, Notificacion, Revision
 
 admin.site.register(User)
-admin.site.register(Event)
-admin.site.register(Holiday)
-admin.site.register(Notification)
-admin.site.register(Review)
+admin.site.register(Evento)
+admin.site.register(Feriado)
+admin.site.register(Notificacion)
+admin.site.register(Revision)
