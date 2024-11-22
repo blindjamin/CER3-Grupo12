@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 # Modelo de Usuario (Extendiendo el sistema de usuarios de Django)
@@ -11,8 +11,24 @@ class User(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='estudiante')
     is_active = models.BooleanField(default=True)
 
+    # Solución: Añade `related_name` a los campos que causan conflicto
+    groups = models.ManyToManyField(
+        Group,
+        related_name="custom_user_set",  # Cambia el nombre de la relación inversa
+        blank=True,
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="custom_user_permissions_set",  # Cambia el nombre de la relación inversa
+        blank=True,
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
+    )
+
 # Modelo de Evento
-class Event(models.Model):
+class Evento(models.Model):
     EVENT_TYPE_CHOICES = [
         ('inicio_semestre', 'Inicio de Semestre'),
         ('fin_semestre', 'Fin de Semestre'),
@@ -54,7 +70,7 @@ class Event(models.Model):
         return f"{self.title} ({self.get_type_display()})"
     
      #Modelo de Feriado
-class Holiday(models.Model):
+class Feriado(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateField()
     region = models.CharField(max_length=100, null=True, blank=True)
@@ -63,8 +79,8 @@ class Holiday(models.Model):
         return self.name
 
 # Modelo de Notificación
-class Notification(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='notifications')
+class Notificacion(models.Model):
+    event = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='notifications')
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -72,11 +88,11 @@ class Notification(models.Model):
         return f"Notificación para {self.event.title}"
     
 # Modelo de Revisión
-class Review(models.Model):
-    event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name='review')
+class Revision(models.Model):
+    event = models.OneToOneField(Evento, on_delete=models.CASCADE, related_name='review')
     reviewed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     comments = models.TextField()
-    status = models.CharField(max_length=20, choices=Event.STATUS_CHOICES)
+    status = models.CharField(max_length=20, choices=Evento.STATUS_CHOICES)
     reviewed_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
