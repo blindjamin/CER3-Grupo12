@@ -97,3 +97,4 @@ class Revision(models.Model):
 
     def __str__(self):
         return f"Revisión de {self.event.title}"
+    
