@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Eventos{% endblock %}
+
+{% block content %}
+<h2>Eventos Académicos</h2>
+<a href="{% url 'event_create' %}" class="btn">Crear Nuevo Evento</a>
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.title }}</td>
+            <td>{{ event.start_date }}</td>
+            <td>{{ event.end_date }}</td>
+            <td>{{ event.get_type_display }}</td>
+            <td>
+                <a href="{% url 'event_detail' event.id %}">Ver</a>
+                <a href="{% url 'event_update' event.id %}">Editar</a>
+                <a href="{% url 'event_delete' event.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

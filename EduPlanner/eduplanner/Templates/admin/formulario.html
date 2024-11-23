@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear/Editar Evento{% endblock %}
+
+{% block content %}
+<h2>{% if event %}Editar Evento{% else %}Crear Nuevo Evento{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'events_list' %}">Cancelar</a>
+{% endblock %}
