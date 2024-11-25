@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import EventoListCreateAPIView, FeriadoListAPIView, NotificacionListAPIView, CalendarioConsolidadoAPIView
+from .views import EventoListCreateAPIView, FeriadoListAPIView, NotificacionListAPIView, CalendarioConsolidadoAPIView, home
 
 urlpatterns = [
+    path('', home, name='home'),
     path('eventos/', EventoListCreateAPIView.as_view(), name='eventos'),
     path('feriados/', FeriadoListAPIView.as_view(), name='feriados'),
     path('notificaciones/', NotificacionListAPIView.as_view(), name='notificaciones'),

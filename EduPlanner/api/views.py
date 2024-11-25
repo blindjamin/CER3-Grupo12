@@ -5,6 +5,8 @@ from rest_framework import status
 from .models import Evento, Feriado, Notificacion, Revision
 from .serializers import EventoSerializer, FreiadoSerializer, NotificacionSerializer, RevisionSerializer
 from rest_framework.permissions import IsAuthenticated
+from api.serializers import EventoSerializer,FreiadoSerializer
+from django.urls import reverse
 
 # Vista para listar y crear eventos
 class EventoListCreateAPIView(APIView):
@@ -45,4 +47,10 @@ class CalendarioConsolidadoAPIView(APIView):
         }
         return Response(data)
     
-
+def home(request):
+    context = {
+        'feriados_url': reverse('feriados', current_app='api'),
+        'eventos_url': reverse('eventos', current_app='api'),
+        'calendario_url': reverse('calendario', current_app='api'),
+    }
+    return render(request, 'base.html', context)
